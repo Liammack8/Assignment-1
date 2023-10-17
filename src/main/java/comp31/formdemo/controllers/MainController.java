@@ -33,37 +33,21 @@ public class MainController {
     public String getForm(Employee employee, Model model) {
         logger.info("---- At /login.");
         logger.info("---- " + employee.toString());
-        Employee currentUser = loginService.findByUserId(employee.getUserId());
-        String returnPage = "login-form";
-        if (currentUser == null) {
-            model.addAttribute("employee", employee);
-            returnPage = "login-form";
-        } else {
-            if(currentUser.getUserId().equals(employee.getUserId()) && 
-                currentUser.getPassword().equals(employee.getPassword())) {
-                
-                if(currentUser.getDepartment().equals("admin")) {
-                    model.addAttribute("employee", employee);
-                    returnPage = "departments/" +  currentUser.getDepartment();
-                }
-                returnPage = "departments/" + currentUser.getDepartment();     
-            } else
-                returnPage = "login-form";    
-        }
-        return returnPage;
+
+        return loginService.login(employee, model);
     }
 
-    @GetMapping("/add-employee")
+    @GetMapping({"/admin" ,"add-employee"})
     public String getEmployee(Model model) { 
         model.addAttribute("employee", new Employee());
-        return "new-employee-form";
+        return "departments/admin";
     }
 
     @PostMapping("/add-employee")
     public String postEmployee(Model model, Employee employee) {
         loginService.addEmployee(employee);
         model.addAttribute("employee", new Employee());
-        return "login-form"; 
+        return "redirect:/add-employee"; 
     }
 
 }

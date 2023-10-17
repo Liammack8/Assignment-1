@@ -3,6 +3,7 @@ package comp31.formdemo.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import comp31.formdemo.model.Employee;
 import comp31.formdemo.repositories.Accounts;
@@ -55,6 +56,27 @@ public class LoginService {
 
     public Employee findByUserId(String userId) {
         return accounts.findByUserId(userId);
+    }
+
+    public String login(Employee employee, Model model) {
+        Employee currentUser = findByUserId(employee.getUserId());
+        String returnPage = "login-form";
+        if (currentUser == null) {
+            model.addAttribute("employee", employee);
+            returnPage = "login-form";
+        } else {
+            if(currentUser.getUserId().equals(employee.getUserId()) && 
+                currentUser.getPassword().equals(employee.getPassword())) {
+                
+                if(currentUser.getDepartment().equals("admin")) {
+                    model.addAttribute("employee", employee);
+                    returnPage = "departments/" +  currentUser.getDepartment();
+                }
+                returnPage = "departments/" + currentUser.getDepartment();     
+            } else
+                returnPage = "login-form";    
+        }
+        return returnPage;
     }
 
 }

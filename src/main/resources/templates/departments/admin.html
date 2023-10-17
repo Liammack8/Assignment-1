@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" type="text/css" th:href="@{css/styles.css}">
 </head>
 
 <body>
@@ -12,16 +13,31 @@
     <h2 th:text="${employee.userId}"></h2>
     <form action="">
         <div th:object="${employee}">
-            <h2 th:field="*{userId}"></h2>
+            <h2 th:field="${userId}"></h2>
             <h2 th:field="*{firstName}"></h2>
-            <!-- <h2 th:text="$employee.lastName"></h2> This line was missing { }   -->
-            <h2 th:text="*{lastName}"></h2> <!-- Corrected -->
+            <h2 th:text="*{lastName}"></h2>
         </div>
     </form>
-
-    <a href="/add-employee">Add Employee</a>
-        
-        
+    <h2>Register an Employee</h2>
+    <form action="/add-employee" method="post" th:object="${employee}">
+        <label>User Id</label>
+        <input type="text" name="userId" th:field="*{userId}">
+        <br>
+        <label>Password</label>
+        <input type="password" name="password" th:field="*{password}">
+        <br>
+        <label>First Name</label>
+        <input type="text" name="firstName" th:field="*{firstName}">
+        <br>
+        <label>Last Name</label>
+        <input type="text" name="lastName" th:field="*{lastName}">
+        <br>
+        <label>Department</label>
+        <input type="text" name="department" th:field="*{department}">
+        <br>
+        <br>
+        <button>Register</button>
+    </form>
 </body>
 
 </html>
